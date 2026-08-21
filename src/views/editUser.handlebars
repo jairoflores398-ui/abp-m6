@@ -1,0 +1,96 @@
+<div id="view-edit-user">
+
+    <header class="py-3">
+        <h1 class="text-center">Editar usuario</h1>
+    </header>
+
+    <main class="container">
+        <section>
+            {{#if user }}
+            {{#with user}}
+            <div class="row justify-content-center">
+                <div class="col col-md-7 col-lg-5">
+                    <form id="form-edit-user">
+                        <div class="mb-3">
+                            <label for="idUser" class="form-label">ID:</label>
+                            <input type="text" class="form-control" name="id" id="idUser" value="{{id}}" required
+                                readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname"
+                                value="{{firstname}}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Apellido:</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname" value="{{lastname}}"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" name="email" id="email" value="{{email}}" required>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-warning">Editar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {{/with }}
+            {{else}}
+            <p class="text-center fs-2 fw-bold">No existe en la base de datos ningún usuario con ID: {{id}}</p>
+            {{/if}}
+        </section>
+
+        <section class="text-center py-3">
+            {{> btnVolver}}
+        </section>
+    </main>
+
+</div>
+
+<script>
+    const formEditUser = document.getElementById("form-edit-user");
+
+    if(formEditUser){
+        formEditUser.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            try {
+                
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                const raw = JSON.stringify({
+                    "firstname": firstname.value,
+                    "lastname": lastname.value,
+                    "email": email.value
+                });
+
+                const requestOptions = {
+                    method: "PUT",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow"
+                };
+
+                const response = await fetch("/api/users/"+idUser.value, requestOptions);
+                const data = await response.json();
+
+                //MANEJAR RESPUESTA DE LA API
+                alert(data.message);
+
+                if(response.status == 201){
+                    setTimeout(() => {
+                        location.href = "/users/profile/"+idUser.value;
+                    }, 1000);
+                }
+                
+            } catch (error) {
+                console.log(error);
+                alert("Error al intentar editar el usuario...");
+            }
+        });
+    };
+
+</script>

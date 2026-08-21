@@ -1,0 +1,48 @@
+<div id="view-edd-user">
+
+    <header class="py-3">
+        <h1 class="text-center">Registra nuesvos usuarios</h1>
+    </header>
+
+    <main class="container">
+        <section>
+            <div class="row justify-content-center">
+                <div class="col col-md-7 col-lg-5">
+                    <form id="form-add-user">
+                        <div class="mb-3">
+                            <label for="firstname" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastname" class="form-label">Apellido:</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input type="email" class="form-control" name="email" id="email" required>
+                        </div>
+                        <div id="btns-form">
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                            <button type="reset" class="btn btn-secondary">Limpiar</button>
+                        </div>
+                        <div class="d-none" id="loader">
+                            <button class="btn btn-primary" type="button" disabled>
+                                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                <span role="status">Creando usuario...</span>
+                            </button>
+                        </div>
+                    </form>
+                    <div id="box-alert">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="text-center py-3">
+            {{> btnVolver}}
+        </section>
+    </main>
+
+</div>
+
+<script defer src="/assets/js/addUser.js"></script>

@@ -1,0 +1,11 @@
+<button id="btn-volver" class="btn btn-primary">Volver</button>
+
+<script>
+    const btnVolver = document.getElementById("btn-volver");
+
+    if(btnVolver){
+        btnVolver.addEventListener("click", () => {
+            history.back();
+        });
+    }
+</script>

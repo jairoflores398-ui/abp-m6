@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: ccef3bfa-a571-4fb5-822f-045fc360c93f
+
+localResources:
+  collections:
+    - ../CRUD ABP M6.postman_collection.json

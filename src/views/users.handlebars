@@ -1,0 +1,44 @@
+<div id="view-users">
+
+    <header class="py-3">
+        <h1 class="text-center">Lista de usuarios de la App</h1>
+    </header>
+
+    <main class="container">
+        <section>
+            {{#if users}}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Apellido</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        {{#each users}}
+                        <tr>
+                            <th scope="row">{{id}}</th>
+                            <td>{{firstname}}</td>
+                            <td>{{lastname}}</td>
+                            <td>{{email}}</td>
+                            <td>
+                                <a href="/users/profile/{{id}}" class="btn btn-info">Ver</a>
+                                <a href="/users/edit/{{id}}" class="btn btn-warning">Editar</a>
+                                <button class="btn btn-danger btn-eliminar" data-id-user="{{id}}">Eliminar</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                <p class="text-center fs-2 fw-bold">No hay usuarios registrados
+                    en el sistema.</p>
+            {{/if}}
+
+        </section>
+    </main>
+
+</div>

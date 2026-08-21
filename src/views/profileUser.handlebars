@@ -1,0 +1,30 @@
+<div id="view-profile-user">
+
+    <header class="py-3">
+        <h1 class="text-center">Perfil usuario</h1>
+    </header>
+
+    <main class="container">
+        <section>
+            {{#if user }}
+            
+            <div class="w-75 mx-auto border border-3 p-3">
+                {{#with user}}
+                <p>ID: {{id}}</p>
+                <p>Nombre: {{firstname}}</p>
+                <p>Apellido: {{lastname}}</p>
+                <p>Email: {{email}}</p>
+                {{/with }}
+            </div>
+
+            {{else}}
+            <p class="text-center fs-2 fw-bold">No existe en la base de datos ningún usuario con ID: {{id}}</p>
+            {{/if}}
+        </section>
+
+        <section class="text-center py-3">
+            {{> btnVolver}}
+        </section>
+    </main>
+
+</div>

@@ -1,0 +1,160 @@
+{
+    "users": [
+        {
+            "firstname": "Bastian",
+            "lastname": "Valdebenito",
+            "email": "bastian.valdebenito@hotmail.com",
+            "id": 1
+        },
+        {
+            "firstname": "Sofía",
+            "lastname": "Valdebenito",
+            "email": "sofia.valdebenito@gmail.com",
+            "id": "fba9f22a-b620-4911-9f1b-c925ddc5f2e4"
+        },
+        {
+            "firstname": "Macarena",
+            "lastname": "Romero",
+            "email": "macarena.romero@gmail.com",
+            "id": "658ade64-f4c3-4f10-9f35-fd57b33e98fc"
+        },
+        {
+            "firstname": "Sofía",
+            "lastname": "Romero",
+            "email": "sofia.romero@gmail.com",
+            "id": "f78df9ec-616b-48e1-b48b-82505bbab7d8"
+        },
+        {
+            "firstname": "Marcela",
+            "lastname": "Villa",
+            "email": "marcela.villa@gmail.com",
+            "id": "03815681-c5ff-4803-8be0-0f794968aad0"
+        },
+        {
+            "firstname": "Juan",
+            "lastname": "Valenzuela",
+            "email": "juanito@gmail.com",
+            "id": "cc52c293-56bf-4751-bc26-f8924d1df54b"
+        },
+        {
+            "firstname": "Josefina",
+            "lastname": "Villa",
+            "email": "josefina@gmail.com",
+            "id": "0dff6f1d-6119-4875-8d1c-ba4aea38e616"
+        },
+        {
+            "firstname": "Teegan",
+            "lastname": "Albert",
+            "email": "ponyn@mailinator.com",
+            "id": "e9cbfd36-86aa-4f38-a44a-95ce0fbcdc67"
+        },
+        {
+            "firstname": "Edan",
+            "lastname": "Mills",
+            "email": "fysoqakuh@mailinator.com",
+            "id": "011487be-ec99-4e8b-8f1c-520592bf5c75"
+        },
+        {
+            "firstname": "Riley",
+            "lastname": "Gallegos",
+            "email": "belodiluta@mailinator.com",
+            "id": "13b75f9d-03d3-4ff5-89e3-da9ee772f6a3"
+        },
+        {
+            "firstname": "Abel",
+            "lastname": "Burns",
+            "email": "hocolowufe@mailinator.com",
+            "id": "424a7dd3-a896-46e7-812e-941bed60d755"
+        },
+        {
+            "firstname": "Eagan",
+            "lastname": "Holman",
+            "email": "qecunyk@mailinator.com",
+            "id": "d3aac0c9-8ea7-429d-b309-0b4ab4a1386f"
+        },
+        {
+            "firstname": "Quinn",
+            "lastname": "Ortiz",
+            "email": "woviran@mailinator.com",
+            "id": "1754ec8c-ea63-4c80-b303-835014f27616"
+        },
+        {
+            "firstname": "Wilma",
+            "lastname": "Copeland",
+            "email": "wotobev@mailinator.com",
+            "id": "ab8a1bd8-d42b-424c-8af1-1d267a18f8c8"
+        },
+        {
+            "firstname": "Lane",
+            "lastname": "Guzman",
+            "email": "cemasuwox@mailinator.com",
+            "id": "f4dd7e1a-6577-48da-b59f-56a84637fc45"
+        },
+        {
+            "firstname": "Ross",
+            "lastname": "Gordon",
+            "email": "goge@mailinator.com",
+            "id": "bc4616f9-7f6a-4443-8267-22ef6f62ef9f"
+        },
+        {
+            "firstname": "Ashely",
+            "lastname": "Hendricks",
+            "email": "puroteha@mailinator.com",
+            "id": "c2a0068b-b338-41a8-a1ce-957a2b61929e"
+        },
+        {
+            "firstname": "Meredith",
+            "lastname": "Durham",
+            "email": "kyponycodu@mailinator.com",
+            "id": "af69a7e0-4a01-47d0-aca4-be92e80036a9"
+        },
+        {
+            "firstname": "Mariam",
+            "lastname": "Boone",
+            "email": "zevo@mailinator.com",
+            "id": "6c35cdbf-d213-44fe-97d1-e787656fa3e2"
+        },
+        {
+            "firstname": "Hakeem",
+            "lastname": "Downs",
+            "email": "mypugatyna@mailinator.com",
+            "id": "4d53acf7-d19c-4d8c-8629-582863b6fe38"
+        },
+        {
+            "firstname": "Hope",
+            "lastname": "Valentine",
+            "email": "bypicyc@mailinator.com",
+            "id": "d328dd39-f217-4d73-a938-ad6252b66300"
+        },
+        {
+            "firstname": "Adara",
+            "lastname": "Zamora",
+            "email": "fohysac@mailinator.com",
+            "id": "ac605626-fe1a-48c4-8f5f-95ac286a0f7f"
+        },
+        {
+            "firstname": "Regan",
+            "lastname": "Chan",
+            "email": "tojoxuqec@mailinator.com",
+            "id": "8acdffbf-8ae7-458b-a65a-77355ab424dd"
+        },
+        {
+            "firstname": "Ori",
+            "lastname": "Valentine",
+            "email": "romaj@mailinator.com",
+            "id": "0a7eaea5-f6bd-4ec2-be9a-cacc2ca769d3"
+        },
+        {
+            "firstname": "Octavius",
+            "lastname": "Cameron",
+            "email": "poqejynu@mailinator.com",
+            "id": "0ae5e169-653a-4d03-b46f-b342cd4b2a66"
+        },
+        {
+            "firstname": "Kalia",
+            "lastname": "Obrien",
+            "email": "buri@mailinator.com",
+            "id": "ca3a6781-62c4-4993-b7fa-9d465eb9654d"
+        }
+    ]
+}
