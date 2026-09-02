@@ -1,11 +1,12 @@
 # ABP Practica M6
 
-Aplicacion backend construida con Node.js, Express y Handlebars para gestionar usuarios mediante vistas web y una API REST.
+Aplicacion backend construida con Node.js, Express y Sequelize para gestionar usuarios y pedidos mediante una base de datos relacional PostgreSQL.
 
 ## Requisitos
 
 - Node.js 18 o superior.
 - npm.
+- PostgreSQL ejecutandose localmente con una base `abp_m6`.
 
 ## Instalacion
 
@@ -13,71 +14,74 @@ Aplicacion backend construida con Node.js, Express y Handlebars para gestionar u
 npm install
 ```
 
-Copia `.env.example` como `.env` si deseas configurar el puerto:
+Crea un archivo `.env` con las credenciales del entorno:
 
 ```env
 PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=abp_m6
+DB_SSL=false
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/abp_m6
+```
+
+## Base de datos
+
+Puedes crear la estructura inicial ejecutando el script SQL ubicado en `src/db/init.sql` en PostgreSQL.
+
+```bash
+psql -U postgres -f src/db/init.sql
 ```
 
 ## Ejecucion
-
-Para ejecutar en modo normal:
 
 ```bash
 npm start
 ```
 
-Para desarrollo, `nodemon` reinicia el servidor cuando detecta cambios:
+Modo desarrollo:
 
 ```bash
 npm run dev
 ```
 
-Tambien puedes indicar el puerto desde la linea de comandos:
-
-```bash
-node server.js --port 3001
-```
-
-Se eligio `server.js` como archivo principal porque concentra el arranque HTTP y la configuracion del puerto, mientras `src/app.js` exporta la aplicacion Express. Esta separacion mantiene independiente la configuracion de la aplicacion y su ejecucion.
-
 ## Rutas principales
 
-- `GET /`: vista HTML de inicio.
-- `GET /status`: respuesta JSON con el estado del servidor.
-- `GET /api/users`: lista de usuarios en JSON.
-- `GET /users`: vista HTML de usuarios.
-- `GET /users/add`: formulario para agregar usuarios.
-- `/assets/...`: archivos estaticos publicados desde `public/`.
+- `GET /api/users` - lista todos los usuarios.
+- `GET /api/users?nombre=Juan` - filtro por nombre.
+- `GET /api/users/:id` - usuario por id.
+- `GET /api/users/email/:email` - usuario por email.
+- `POST /api/users` - crear usuario.
+- `PUT /api/users/:id` - actualizar usuario.
+- `DELETE /api/users/:id` - eliminar usuario.
+- `POST /api/users/transaccion` - creación de usuario + pedido con transacción.
+- `GET /api/users/:id/pedidos` - usuario con sus pedidos usando `include`.
+- `GET /status` - estado del servidor.
 
-Cada solicitud se registra en `logs/log.txt` con fecha, hora, metodo y ruta accedida. El archivo incluye tres accesos iniciales para cumplir el ejercicio de persistencia en archivos planos.
+## Justificacion del enfoque
 
-## Postman
+Se eligio PostgreSQL + Sequelize porque permite trabajar con consultas SQL tradicionales y una abstraccion moderna ORM con relaciones claras. Las credenciales se almacenan en `.env`, evitando exponer secretos en el codigo fuente. El proyecto elimina datos sensibles como `password_hash` antes de responder JSON.
 
-Importa `CRUD ABP M6.postman_collection.json` en Postman. La coleccion incluye las rutas web, el estado del servidor y las operaciones CRUD de usuarios.
+## Trasabilidad y validaciones
 
-La variable de coleccion `baseUrl` apunta por defecto a `http://localhost:3000`. Si ejecutas el servidor en otro puerto, cambia esa variable antes de enviar las solicitudes.
+- Se validan campos obligatorios en creation/update.
+- Se evita responder información sensible.
+- Se implementa rollback en la operacion transaccional si falla alguna parte.
+- Se usan mensajes claros para errores de conexión, validacion y ausencia de registros.
 
 ## Estructura
 
 ```text
 server.js              # Punto de entrada HTTP
 src/app.js             # Configuracion de Express
+src/db/                # Conexion DB y scripts SQL
 src/routes/            # Rutas web y API
 src/controllers/        # Logica de las respuestas
-src/middlewares/        # Middlewares reutilizables
-src/models/             # Modelo de usuario
-src/db/                 # Persistencia JSON
-src/utils/              # Utilidades de archivos
-public/                 # Recursos estaticos
-logs/                   # Registro de visitas
-src/views/              # Plantillas Handlebars
+src/models/             # Modelos Sequelize
+src/utils/              # Utilidades de sanitizacion y filtros
+public/                # Recursos estaticos
+logs/                  # Registro de visitas
+src/views/             # Plantillas Handlebars
 ```
-
-## Flujo servidor-cliente
-
-```text
-Cliente -> solicitud HTTP -> Express -> middleware de logs -> ruta -> controlador -> respuesta HTML o JSON
-```
-
-Node.js proporciona el entorno de ejecucion JavaScript del servidor. Express aporta enrutamiento, middlewares, manejo de solicitudes y respuestas, y publicacion de archivos estaticos.

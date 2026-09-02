@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,8 @@
     "express": "^5.2.1",
     "express-handlebars": "^9.0.1",
     "moment": "^2.30.1",
+    "pg": "^8.23.0",
+    "sequelize": "^6.37.8",
     "uuid": "^14.0.1",
     "yargs": "^18.1.0"
   },

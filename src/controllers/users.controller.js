@@ -1,139 +1,225 @@
+import { Op } from "sequelize";
+import sequelize from "../db/database.js";
 import User from "../models/User.model.js";
+import Order from "../models/Order.model.js";
+import {
+  sanitizeUser,
+  buildUserFilters,
+  normalizeFilterForSequelize,
+} from "../utils/data-utils.js";
 
-export const getAllUsers = (req, res) => {
-    try {
-        const users = User.findAll();
-        res.json({ users });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message:
-                "No se pude obtener la data de usuarios, intente más tarde.",
-        });
-    }
+export const getAllUsers = async (req, res) => {
+  try {
+    const filters = buildUserFilters(req.query);
+    const where = normalizeFilterForSequelize(filters);
+
+    const users = await User.findAll({
+      where,
+      attributes: { exclude: ["password_hash", "createdAt", "updatedAt"] },
+      order: [["id", "ASC"]],
+    });
+
+    res.json({
+      count: users.length,
+      data: users.map((user) => sanitizeUser(user.toJSON())),
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "No se pudo obtener la información de usuarios.",
+        error: error.message,
+      });
+  }
 };
 
-export const getUserById = (req, res) => {
-    try {
-        let { id } = req.params;
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password_hash", "createdAt", "updatedAt"] },
+    });
 
-        const user = User.findById(id);
-        if (!user)
-            return res.status(404).json({ message: "Usuario no encontrado." });
-
-        res.json({ user });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message:
-                "No se pude obtener la data del usuario, intente más tarde.",
-        });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
+
+    res.json({ data: sanitizeUser(user.toJSON()) });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "No se pudo consultar el usuario.",
+        error: error.message,
+      });
+  }
 };
 
-export const getUserByEmail = (req, res) => {
-    try {
-        let { email } = req.params;
+export const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findOne({
+      where: { email },
+      attributes: { exclude: ["password_hash", "createdAt", "updatedAt"] },
+    });
 
-        const user = User.findByEmail(email);
-        if (!user)
-            return res.status(404).json({ message: "Usuario no encontrado." });
-
-        res.json({ user });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message:
-                "No se pude obtener la data del usuario, intente más tarde.",
-        });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
+
+    res.json({ data: sanitizeUser(user.toJSON()) });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "No se pudo buscar el usuario por email.",
+        error: error.message,
+      });
+  }
 };
 
-export const createUser = (req, res) => {
-    try {
-        let { firstname, lastname, email } = req.body;
+export const createUser = async (req, res) => {
+  try {
+    const { firstname, lastname, email } = req.body;
 
-        if (!firstname || !lastname || !email) {
-            return res
-                .status(400)
-                .json({ message: "No se proporcionan los campos requeridos." });
-        }
-
-        const newUser = new User(firstname, lastname, email);
-
-        newUser.save();
-
-        res.status(201).json({
-            message: "Usuario creado con éxito.",
-            user: newUser,
-        });
-    } catch (error) {
-        if (error.code) {
-            return res.status(error.code).json({ message: error.message });
-        }
-        res.status(500).json({
-            message: "No se pude crear el usuario, intente más tarde.",
-        });
+    if (!firstname || !lastname || !email) {
+      return res
+        .status(400)
+        .json({ message: "Se requieren nombre, apellido y email." });
     }
+
+    const user = await User.create({ firstname, lastname, email });
+
+    res.status(201).json({
+      message: "Usuario creado con éxito.",
+      data: sanitizeUser(user.toJSON()),
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(400)
+      .json({ message: "No se pudo crear el usuario.", error: error.message });
+  }
 };
 
-export const updateUser = (req, res) => {
-    try {
-        
-        let { id } = req.params;
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { firstname, lastname, email } = req.body;
 
-        let { firstname, lastname, email } = req.body;
-
-        const user = User.findById(id);
-
-        if (!user)
-            return res.status(404).json({ message: "Usuario no encontrado." });
-
-        user.firstname = firstname || user.firstname;
-        user.lastname = lastname || user.lastname;
-        user.email = email || user.email;
-
-        user.update();
-
-        res.status(201).json({
-            message: "Usuario actualizado con éxito.",
-            user,
-        });
-    } catch (error) {
-        console.log(error);
-        if (error.code) {
-            return res.status(error.code).json({ message: error.message });
-        }
-
-        res.status(500).json({
-            message: "No se pudo crear el usuario, intente más tarde.",
-        });
+    const user = await User.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
+
+    if (firstname) user.firstname = firstname;
+    if (lastname) user.lastname = lastname;
+    if (email) user.email = email;
+
+    await user.save();
+
+    res.json({
+      message: "Usuario actualizado con éxito.",
+      data: sanitizeUser(user.toJSON()),
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(400)
+      .json({
+        message: "No se pudo actualizar el usuario.",
+        error: error.message,
+      });
+  }
 };
 
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
 
-export const deleteUser = (req, res) => {
-    try {
-        
-        let { id } = req.params;
-
-        const user = User.findById(id);
-
-        if (!user)
-            return res.status(404).json({ message: "Usuario no encontrado." });
-
-        user.delete();
-
-        res.status(200).json({message: "Usuario eliminado con éxito."});
-
-    } catch (error) {
-        console.log(error);
-        if (error.code) {
-            return res.status(error.code).json({ message: error.message });
-        }
-
-        res.status(500).json({
-            message: "Error al intentar eliminar el usuario, intente más tarde.",
-        });
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
     }
+
+    await user.destroy();
+
+    res.json({ message: "Usuario eliminado con éxito.", id });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "No se pudo eliminar el usuario.",
+        error: error.message,
+      });
+  }
+};
+
+export const registerUserWithOrder = async (req, res) => {
+  const { firstname, lastname, email, total } = req.body;
+  const transaction = await sequelize.transaction();
+
+  try {
+    const user = await User.create(
+      { firstname, lastname, email },
+      { transaction },
+    );
+    await Order.create(
+      { total, user_id: user.id, estado: "pendiente" },
+      { transaction },
+    );
+
+    await transaction.commit();
+
+    res.status(201).json({
+      message: "Usuario y pedido creados con éxito.",
+      user: sanitizeUser(user.toJSON()),
+      pedido: { total, estado: "pendiente" },
+    });
+  } catch (error) {
+    await transaction.rollback();
+    console.error(
+      "Rollback ejecutado por error en transacción:",
+      error.message,
+    );
+    res
+      .status(400)
+      .json({
+        message: "La transacción falló y se ejecutó rollback.",
+        error: error.message,
+      });
+  }
+};
+
+export const getUserWithOrders = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id, {
+      include: [
+        {
+          model: Order,
+          as: "pedidos",
+        },
+      ],
+      attributes: { exclude: ["password_hash", "createdAt", "updatedAt"] },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado." });
+    }
+
+    res.json({ data: sanitizeUser(user.toJSON()) });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({
+        message: "No se pudo recuperar el usuario con sus pedidos.",
+        error: error.message,
+      });
+  }
 };

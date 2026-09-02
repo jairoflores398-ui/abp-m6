@@ -4,24 +4,13 @@ import validateBody from '../middlewares/validate_body.js';
 
 const router = express.Router();
 
-//GET ALL USERS
 router.get("/", userController.getAllUsers);
-
-//GET USER BY ID
-router.get("/:id", userController.getUserById);
-
-//GET USER BY EMAIL
 router.get("/email/:email", userController.getUserByEmail);
-
-//ADD USER -> POST
-
+router.get("/:id/pedidos", userController.getUserWithOrders);
+router.get("/:id", userController.getUserById);
 router.post("/", validateBody, userController.createUser);
-
-//UPDATE USER -> PUT
+router.post("/transaccion", validateBody, userController.registerUserWithOrder);
 router.put("/:id", validateBody, userController.updateUser);
-
-//DELETE USER -> DELETE
-
 router.delete("/:id", userController.deleteUser);
 
 export default router;

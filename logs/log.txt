@@ -17,3 +17,9 @@
 20-08-2026 8:09:35 p. m. - GET /users
 20-08-2026 8:09:39 p. m. - GET /users/add
 20-08-2026 8:21:43 p. m. - GET /api/usuarios
+01-09-2026 8:48:13 p. m. - GET /
+01-09-2026 8:49:49 p. m. - GET /api/users
+01-09-2026 8:50:50 p. m. - GET /api/users/1
+01-09-2026 8:53:51 p. m. - POST /api/users
+01-09-2026 8:57:11 p. m. - POST /api/users
+01-09-2026 8:58:42 p. m. - DELETE /api/users/4
